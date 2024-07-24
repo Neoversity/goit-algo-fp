@@ -1,7 +1,9 @@
-import networkx as nx
-import matplotlib.pyplot as plt
-import io
 import random
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import networkx as nx
+import io
 
 class Graph:
     def __init__(self):
@@ -27,7 +29,6 @@ class Graph:
         edge_labels = nx.get_edge_attributes(G, 'weight')
         nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=14)
 
-        # Draw the shortest paths in red
         for node, distance in shortest_paths.items():
             if node != start_node:
                 path = nx.shortest_path(G, source=start_node, target=node, weight='weight')
@@ -42,12 +43,14 @@ class Graph:
 
 def generate_connected_random_graph(num_nodes, num_edges):
     graph = Graph()
-    while len(graph.edges) < num_edges:
+    edges_set = set()
+    while len(edges_set) < num_edges:
         from_node = str(random.randint(1, num_nodes))
         to_node = str(random.randint(1, num_nodes))
-        if from_node != to_node:
+        if from_node != to_node and (from_node, to_node) not in edges_set and (to_node, from_node) not in edges_set:
             weight = round(random.uniform(1, 10), 2)
             graph.add_edge(from_node, to_node, weight)
+            edges_set.add((from_node, to_node))
     return graph
 
 def dijkstra(graph, start):
@@ -89,7 +92,6 @@ def visualize_graph(graph, shortest_paths, start_node):
     edge_labels = nx.get_edge_attributes(G, 'weight')
     nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=14)
 
-    # Draw the shortest paths in red
     for node, distance in shortest_paths.items():
         if node != start_node:
             path = nx.shortest_path(G, source=start_node, target=node, weight='weight')
