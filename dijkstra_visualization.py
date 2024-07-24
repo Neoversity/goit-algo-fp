@@ -1,42 +1,101 @@
-import matplotlib.pyplot as plt
 import networkx as nx
+import matplotlib.pyplot as plt
 import io
+import random
 
-def visualize_graph(graph, shortest_paths=None, start_node=None):
-    """
-    Візуалізує граф і найкоротші шляхи, знайдені алгоритмом Дейкстри.
-    
-    :param graph: об'єкт Graph
-    :param shortest_paths: словник найкоротших шляхів (за бажанням)
-    :param start_node: початкова вершина (за бажанням)
-    """
-    G = nx.DiGraph()
+class Graph:
+    def __init__(self):
+        self.edges = {}
 
-    for edge, weight in graph.weights.items():
-        from_node, to_node = edge
-        G.add_edge(from_node, to_node, weight=weight)
+    def add_edge(self, from_node, to_node, weight):
+        if from_node not in self.edges:
+            self.edges[from_node] = []
+        self.edges[from_node].append((to_node, weight))
+        if to_node not in self.edges:
+            self.edges[to_node] = []
+        self.edges[to_node].append((from_node, weight))
 
-    pos = nx.spring_layout(G)  # позиції вершин для візуалізації
-    edge_labels = {(u, v): f'{d["weight"]:.2f}' for u, v, d in G.edges(data=True)}
+    def draw_graph_with_paths(self, shortest_paths, start_node):
+        G = nx.Graph()
+        for from_node, edges in self.edges.items():
+            for to_node, weight in edges:
+                G.add_edge(from_node, to_node, weight=weight)
 
-    plt.figure(figsize=(10, 7))
-    nx.draw(G, pos, with_labels=True, node_color='lightblue', node_size=2000, font_size=15, font_weight='bold', arrows=True)
-    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=15)
+        pos = nx.spring_layout(G)
+        plt.figure()
+        nx.draw(G, pos, with_labels=True, node_color='skyblue', node_size=3000, font_size=18, font_weight='bold')
+        edge_labels = nx.get_edge_attributes(G, 'weight')
+        nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=14)
 
-    if shortest_paths and start_node:
-        path_edges = []
-        for target_node in shortest_paths:
-            if target_node != start_node and shortest_paths[target_node] != float('inf'):
-                try:
-                    path = nx.shortest_path(G, source=start_node, target=target_node, weight='weight')
-                    path_edges += list(zip(path[:-1], path[1:]))
+        # Draw the shortest paths in red
+        for node, distance in shortest_paths.items():
+            if node != start_node:
+                path = nx.shortest_path(G, source=start_node, target=node, weight='weight')
+                path_edges = list(zip(path, path[1:]))
+                nx.draw_networkx_edges(G, pos, edgelist=path_edges, edge_color='r', width=2)
 
-                except nx.NetworkXNoPath:
-                    continue
-        nx.draw_networkx_edges(G, pos, edgelist=path_edges, edge_color='r', width=2)
+        img = io.BytesIO()
+        plt.savefig(img, format='png')
+        img.seek(0)
+        plt.close()
+        return img
 
-    plt.title("Graph Visualization with Dijkstra's Shortest Paths")
-    
+def generate_connected_random_graph(num_nodes, num_edges):
+    graph = Graph()
+    while len(graph.edges) < num_edges:
+        from_node = str(random.randint(1, num_nodes))
+        to_node = str(random.randint(1, num_nodes))
+        if from_node != to_node:
+            weight = round(random.uniform(1, 10), 2)
+            graph.add_edge(from_node, to_node, weight)
+    return graph
+
+def dijkstra(graph, start):
+    shortest_paths = {start: (None, 0)}
+    current_node = start
+    visited = set()
+
+    while current_node is not None:
+        visited.add(current_node)
+        destinations = graph.edges[current_node]
+        current_weight = shortest_paths[current_node][1]
+
+        for next_node, weight in destinations:
+            weight += current_weight
+            if next_node not in shortest_paths:
+                shortest_paths[next_node] = (current_node, weight)
+            else:
+                current_shortest_weight = shortest_paths[next_node][1]
+                if current_shortest_weight > weight:
+                    shortest_paths[next_node] = (current_node, weight)
+
+        next_destinations = {node: shortest_paths[node] for node in shortest_paths if node not in visited}
+        if not next_destinations:
+            current_node = None
+        else:
+            current_node = min(next_destinations, key=lambda k: next_destinations[k][1])
+
+    return {node: weight for node, (prev, weight) in shortest_paths.items()}
+
+def visualize_graph(graph, shortest_paths, start_node):
+    G = nx.Graph()
+    for from_node, edges in graph.edges.items():
+        for to_node, weight in edges:
+            G.add_edge(from_node, to_node, weight=weight)
+
+    pos = nx.spring_layout(G)
+    plt.figure()
+    nx.draw(G, pos, with_labels=True, node_color='skyblue', node_size=3000, font_size=18, font_weight='bold')
+    edge_labels = nx.get_edge_attributes(G, 'weight')
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=14)
+
+    # Draw the shortest paths in red
+    for node, distance in shortest_paths.items():
+        if node != start_node:
+            path = nx.shortest_path(G, source=start_node, target=node, weight='weight')
+            path_edges = list(zip(path, path[1:]))
+            nx.draw_networkx_edges(G, pos, edgelist=path_edges, edge_color='r', width=2)
+
     img = io.BytesIO()
     plt.savefig(img, format='png')
     img.seek(0)

@@ -1,6 +1,5 @@
 from linked_list import create_node, append, print_list, reverse, insertion_sort, merge_sorted_lists, visualize_linked_list
-from dijkstra_gui import generate_connected_random_graph, Graph, dijkstra
-from dijkstra_visualization import visualize_graph
+from dijkstra_visualization import generate_connected_random_graph, Graph, dijkstra, visualize_graph
 from heap_visualization import array_to_heap, draw_heap_tree, is_valid_heap
 from tree_traversal_visualization import visualize_dfs, visualize_bfs
 from food_selection import greedy_algorithm, dynamic_programming
@@ -11,9 +10,6 @@ import matplotlib.pyplot as plt
 import base64
 
 def task_1():
-    """
-    Виконує завдання 1: робота з однозв'язним списком.
-    """
     head = None
     head = append(head, 3)
     head = append(head, 1)
@@ -57,17 +53,11 @@ def task_1():
     return output.getvalue() + f'<img src="data:image/png;base64,{plot_url}" />'
 
 def task_2(level):
-    """
-    Виконує завдання 2: малювання фрактала "дерево Піфагора".
-    """
     img = draw_tree(level)
     plot_url = base64.b64encode(img.getvalue()).decode()
     return f'<img src="data:image/png;base64,{plot_url}" />'
 
 def task_3(num_nodes, num_edges, start_node):
-    """
-    Виконує завдання 3: алгоритм Дейкстри для знаходження найкоротших шляхів у зваженому графі.
-    """
     graph = generate_connected_random_graph(num_nodes, num_edges)
     shortest_paths = dijkstra(graph, start_node)
 
@@ -82,9 +72,6 @@ def task_3(num_nodes, num_edges, start_node):
     return output.getvalue() + f'<img src="data:image/png;base64,{plot_url}" />'
 
 def task_4(heap_array):
-    """
-    Виконує завдання 4: візуалізація бінарної купи.
-    """
     heap_root = array_to_heap(heap_array)
     if not is_valid_heap(heap_root):
         return "Невірна структура купи"
@@ -93,9 +80,6 @@ def task_4(heap_array):
     return f'<img src="data:image/png;base64,{plot_url}" />'
 
 def task_5(heap_array, traversal_method):
-    """
-    Виконує завдання 5: візуалізація обходу бінарного дерева.
-    """
     heap_root = array_to_heap(heap_array)
 
     if traversal_method == 'DFS':
@@ -109,9 +93,6 @@ def task_5(heap_array, traversal_method):
     return f'<img src="data:image/png;base64,{plot_url}" />'
 
 def task_6(budget):
-    """
-    Виконує завдання 6: жадібний алгоритм та динамічне програмування для вибору їжі.
-    """
     items = {
         "pizza": {"cost": 50, "calories": 300},
         "hamburger": {"cost": 40, "calories": 250},
@@ -137,9 +118,6 @@ def task_6(budget):
     return output.getvalue()
 
 def task_7():
-    """
-    Виконує завдання 7: метод Монте-Карло для визначення ймовірностей сум при киданні двох кубиків.
-    """
     output = io.StringIO()
     print("Monte Carlo Dice Simulation:", file=output)
     result = run_monte_carlo_simulation(output)
