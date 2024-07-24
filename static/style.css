@@ -1,0 +1,61 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+}
+
+h1 {
+    margin-top: 20px;
+}
+
+#task-buttons {
+    margin-top: 20px;
+}
+
+button {
+    margin: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+#output {
+    margin-top: 20px;
+    font-size: 18px;
+    color: green;
+}
+
+@media (min-width: 768px) {
+    body {
+        flex-direction: row;
+    }
+
+    #tasks {
+        width: 50%;
+        padding: 20px;
+        overflow-y: auto;
+        border-right: 1px solid #ccc;
+    }
+
+    #output {
+        width: 50%;
+        padding: 20px;
+        overflow-y: auto;
+    }
+}
+
+.task-section {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.task-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}

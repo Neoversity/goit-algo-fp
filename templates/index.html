@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Task Runner</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div id="tasks">
+        <h1>Фінальний проєкт курсу <br>Basic Algorithms and Data Structures</h1>
+        <div id="task-buttons">
+
+            <div class="task-section">
+                <div class="task-title">Завдання 1: Linked List Operations</div>
+                <button onclick="runTask(1)">Linked List Operations</button>
+            </div>
+
+            <div class="task-section">
+                <div class="task-title">Завдання 2: Pythagoras Tree Fractal</div>
+                <div>
+                    <label for="recursion-level">Recursion Level for Pythagoras Tree:</label>
+                    <input type="number" id="recursion-level" name="recursion-level" value="4">
+                </div>
+                <button onclick="runTask(2)">Pythagoras Tree Fractal</button>
+            </div>
+
+            <div class="task-section">
+                <div class="task-title">Завдання 3: Dijkstra's Algorithm</div>
+                <div>
+                    <label for="num-nodes">Number of Nodes:</label>
+                    <input type="number" id="num-nodes" name="num-nodes" value="11">
+                </div>
+                <div>
+                    <label for="num-edges">Number of Edges:</label>
+                    <input type="number" id="num-edges" name="num-edges" value="15">
+                </div>
+                <div>
+                    <label for="start-node">Start Node:</label>
+                    <input type="text" id="start-node" name="start-node" value="1">
+                </div>
+                <button onclick="runTask(3)">Dijkstra's Algorithm</button>
+            </div>
+
+            <div class="task-section">
+                <div class="task-title">Завдання 4: Visualize Binary Heap</div>
+                <div>
+                    <label for="heap-array">Heap Array (comma separated):</label>
+                    <input type="text" id="heap-array" name="heap-array" value="0,1,4,3,5,10">
+                </div>
+                <button onclick="runTask(4)">Visualize Binary Heap</button>
+            </div>
+
+            <div class="task-section">
+                <div class="task-title">Завдання 5: Visualize Tree Traversal</div>
+                <div>
+                    <label for="traversal-method">Traversal Method:</label>
+                    <select id="traversal-method" name="traversal-method">
+                        <option value="DFS">DFS</option>
+                        <option value="BFS">BFS</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="heap-array">Heap Array (comma separated):</label>
+                    <input type="text" id="heap-array-traversal" name="heap-array-traversal" value="0,1,4,3,5,10">
+                </div>
+                <button onclick="runTask(5)">Visualize Tree Traversal</button>
+            </div>
+
+            <div class="task-section">
+                <div class="task-title">Завдання 6: Greedy and Dynamic Programming Food Selection</div>
+                <div>
+                    <label for="budget">Budget for Food Selection:</label>
+                    <input type="number" id="budget" name="budget" value="100">
+                </div>
+                <button onclick="runTask(6)">Greedy and Dynamic Programming Food Selection</button>
+            </div>
+
+            <div class="task-section">
+                <div class="task-title">Завдання 7: Monte Carlo Dice Simulation</div>
+                <button onclick="runTask(7)">Monte Carlo Dice Simulation</button>
+            </div>
+        </div>
+    </div>
+    <div id="output"></div>
+    <script>
+        function runTask(taskId, params = {}) {
+            if (taskId === 2) {
+                params.level = document.getElementById('recursion-level').value;
+            } else if (taskId === 3) {
+                params.num_nodes = document.getElementById('num-nodes').value;
+                params.num_edges = document.getElementById('num-edges').value;
+                params.start_node = document.getElementById('start-node').value;
+            } else if (taskId === 4) {
+                params.heap_array = document.getElementById('heap-array').value.split(',').map(Number);
+            } else if (taskId === 5) {
+                params.heap_array = document.getElementById('heap-array-traversal').value.split(',').map(Number);
+                params.traversal_method = document.getElementById('traversal-method').value;
+            } else if (taskId === 6) {
+                params.budget = document.getElementById('budget').value;
+            }
+            fetch('/run_task', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ task_id: taskId, ...params }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('output').innerHTML = data.output;
+                });
+        }
+    </script>
+</body>
+
+</html>
