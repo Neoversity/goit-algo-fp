@@ -57,18 +57,28 @@ def task_2(level):
     return f'<img src="data:image/png;base64,{plot_url}" />'
 
 def task_3(num_nodes, num_edges, start_node):
-    graph = generate_connected_random_graph(num_nodes, num_edges)
-    shortest_paths = dijkstra(graph, start_node)
+    if num_nodes < 2:
+        return "Number of nodes must be at least 2."
+    if num_edges < num_nodes - 1:
+        return "Number of edges must be at least number of nodes minus one for a connected graph."
+    if num_edges > num_nodes * (num_nodes - 1) / 2:
+        return "Too many edges for the given number of nodes."
 
-    output = io.StringIO()
-    print("Shortest paths from node {}: ".format(start_node), file=output)
-    for node, distance in shortest_paths.items():
-        print("Distance to {}: {:.2f}".format(node, distance), file=output)
+    try:
+        graph = generate_connected_random_graph(num_nodes, num_edges)
+        shortest_paths = dijkstra(graph, start_node)
 
-    img = visualize_graph(graph, shortest_paths, start_node)
-    plot_url = base64.b64encode(img.getvalue()).decode()
+        output = io.StringIO()
+        print("Shortest paths from node {}: ".format(start_node), file=output)
+        for node, distance in shortest_paths.items():
+            print("Distance to {}: {:.2f}".format(node, distance), file=output)
 
-    return output.getvalue() + f'<img src="data:image/png;base64,{plot_url}" />'
+        img = visualize_graph(graph, shortest_paths, start_node)
+        plot_url = base64.b64encode(img.getvalue()).decode()
+
+        return output.getvalue() + f'<img src="data:image/png;base64,{plot_url}" />'
+    except ValueError as e:
+        return str(e)
 
 def task_4(heap_array):
     heap_root = array_to_heap(heap_array)

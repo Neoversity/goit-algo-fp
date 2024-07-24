@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import io
 
+
 def draw_branch(ax, x, y, branch_length, angle, level):
     """
     Малює одну гілку дерева Піфагора.
@@ -32,6 +33,7 @@ def draw_branch(ax, x, y, branch_length, angle, level):
     # Малюємо ліву гілку
     draw_branch(ax, x_end, y_end, branch_length * 0.7, angle + 30, level - 1)
 
+
 def draw_tree(level):
     """
     Малює дерево Піфагора з заданим рівнем рекурсії.
@@ -39,8 +41,8 @@ def draw_tree(level):
     :param level: рівень рекурсії
     """
     fig, ax = plt.subplots()
-    ax.set_aspect('equal')
-    ax.axis('off')
+    ax.set_aspect("equal")
+    ax.axis("off")
 
     # Початкові координати
     x = 0
@@ -51,7 +53,7 @@ def draw_tree(level):
 
     # Зберігаємо зображення в буфер
     img = io.BytesIO()
-    plt.savefig(img, format='png')
+    plt.savefig(img, format="png")
     img.seek(0)
     plt.close()
     return img

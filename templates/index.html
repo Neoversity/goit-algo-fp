@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Algorithm Visualizations</title>
+    <title>Babenko Anton</title>
     <style>
         body {
             display: flex;
             font-family: Arial, sans-serif;
         }
+
         .task-container {
             width: 50%;
             padding: 20px;
             box-sizing: border-box;
         }
+
         .visualization-container {
             width: 50%;
             padding: 20px;
@@ -21,44 +24,51 @@
         }
     </style>
 </head>
+
 <body>
     <div class="task-container">
         <h1>Algorithm Visualizations</h1>
         <h2>Task 1: Linked List Operations</h2>
-        <button onclick="runTask(1)">Run Task 1</button>
+        <button onclick="runTask(1, 'Task 1: Linked List Operations')">Run Task 1</button>
         <h2>Task 2: Pythagoras Tree Fractal</h2>
-        <input type="number" id="level" placeholder="Recursion Level">
-        <button onclick="runTask(2)">Run Task 2</button>
+        <input type="number" id="level" placeholder="Recursion Level" min="1" max="9">
+        <button onclick="runTask(2, 'Task 2: Pythagoras Tree Fractal')">Run Task 2</button>
         <h2>Task 3: Dijkstra's Algorithm</h2>
         <input type="number" id="num_nodes" placeholder="Number of Nodes">
         <input type="number" id="num_edges" placeholder="Number of Edges">
         <input type="text" id="start_node" placeholder="Start Node">
-        <button onclick="runTask(3)">Run Task 3</button>
+        <button onclick="runTask(3, 'Task 3: Dijkstra\'s Algorithm')">Run Task 3</button>
         <h2>Task 4: Visualize Binary Heap</h2>
-        <input type="text" id="heap_array" placeholder="Heap Array (comma-separated)">
-        <button onclick="runTask(4)">Run Task 4</button>
+        <input type="text" id="heap_array" placeholder="Heap Array (comma-separated)" value="1,2,3,4,5,6">
+        <button onclick="runTask(4, 'Task 4: Visualize Binary Heap')">Run Task 4</button>
         <h2>Task 5: Visualize Tree Traversal</h2>
-        <input type="text" id="traversal_heap_array" placeholder="Heap Array (comma-separated)">
+        <input type="text" id="traversal_heap_array" placeholder="Heap Array (comma-separated)" value="1,2,3,4,5,6,22,55,33,75,11,23,24,32,43,51">
         <select id="traversal_method">
             <option value="DFS">DFS</option>
             <option value="BFS">BFS</option>
         </select>
-        <button onclick="runTask(5)">Run Task 5</button>
+        <button onclick="runTask(5, 'Task 5: Visualize Tree Traversal')">Run Task 5</button>
         <h2>Task 6: Food Selection</h2>
         <input type="number" id="budget" placeholder="Budget">
-        <button onclick="runTask(6)">Run Task 6</button>
+        <button onclick="runTask(6, 'Task 6: Food Selection')">Run Task 6</button>
         <h2>Task 7: Monte Carlo Dice Simulation</h2>
-        <button onclick="runTask(7)">Run Task 7</button>
+        <button onclick="runTask(7, 'Task 7: Monte Carlo Dice Simulation')">Run Task 7</button>
+        <h3>Babenko Anton MCS6</h3>
     </div>
     <div class="visualization-container" id="output-container">
         <h1>Output</h1>
         <div id="output"></div>
     </div>
     <script>
-        async function runTask(task_id) {
+        async function runTask(task_id, task_name) {
             let data = { task_id };
             if (task_id == 2) {
-                data.level = document.getElementById('level').value || 4;
+                let level = document.getElementById('level').value || 4;
+                if (level > 9) {
+                    level = 9;
+                    alert('Recursion level set to maximum value of 9.');
+                }
+                data.level = level;
             } else if (task_id == 3) {
                 data.num_nodes = document.getElementById('num_nodes').value || 11;
                 data.num_edges = document.getElementById('num_edges').value || 15;
@@ -77,7 +87,7 @@
                 body: JSON.stringify(data)
             });
             const result = await response.json();
-            document.getElementById('output').innerHTML = result.output;
+            document.getElementById('output').innerHTML = `<h2>${task_name}</h2>` + result.output;
         }
     </script>
 </body>

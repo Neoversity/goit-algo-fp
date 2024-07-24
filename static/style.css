@@ -59,3 +59,18 @@ button {
     font-weight: bold;
     margin-bottom: 10px;
 }
+
+body {
+    display: flex;
+    font-family: Arial, sans-serif;
+}
+.task-container {
+    width: 50%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.visualization-container {
+    width: 50%;
+    padding: 20px;
+    box-sizing: border-box;
+}
