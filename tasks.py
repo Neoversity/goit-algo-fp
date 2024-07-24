@@ -6,7 +6,6 @@ from food_selection import greedy_algorithm, dynamic_programming
 from monte_carlo_dice import run_monte_carlo_simulation
 from pythagoras_tree import draw_tree
 import io
-import matplotlib.pyplot as plt
 import base64
 
 def task_1():
