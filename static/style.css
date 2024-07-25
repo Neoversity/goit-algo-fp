@@ -1,11 +1,64 @@
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background-color: #f0f0f0;
     display: flex;
-    flex-direction: column;
-    height: 100vh;
+    font-family: Arial, sans-serif;
+    background-image: url('fon.jpg');
+    background-size: contain; /* Масштабувати зображення, щоб воно заповнювало всю ширину екрану без обрізання */
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    height: 100vh; /* Ensure the background covers the entire viewport height */
+    width: 100vw; /* Ensure the background covers the entire viewport width */
     margin: 0;
+    padding: 0;
+    color: #333;
+    background-color: #fff; /* Для заповнення пробілів, якщо зображення не заповнює всю висоту */
+}
+
+.task-container {
+    width: 50%;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-right: 1px solid #ccc;
+    overflow-y: auto;
+}
+
+.visualization-container {
+    width: 50%;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.8);
+    overflow-y: auto;
+}
+
+button {
+    display: block;
+    margin-top: 10px;
+    padding: 10px 15px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+input, select {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+h3 {
+    margin-top: 40px;
 }
 
 h1 {
