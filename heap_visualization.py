@@ -4,19 +4,30 @@ import matplotlib.pyplot as plt
 import io
 
 class Node:
+    """
+    Клас, що представляє вузол дерева.
+    """
     def __init__(self, key, color="skyblue"):
         self.left = None
         self.right = None
         self.val = key
         self.color = color
-        self.id = str(uuid.uuid4())
+        self.id = str(uuid.uuid4())  # Унікальний ідентифікатор для кожного вузла
 
 def array_to_heap(arr):
+    """
+    Перетворює масив на дерево-купу.
+    
+    :param arr: вхідний масив
+    :return: корінь дерева-купи
+    """
     if not arr:
         return None
 
+    # Створення вузлів для кожного елемента масиву
     nodes = [Node(key) for key in arr]
     
+    # Призначення лівих і правих дочірніх вузлів
     for i in range(len(nodes)):
         if 2 * i + 1 < len(nodes):
             nodes[i].left = nodes[2 * i + 1]
@@ -26,6 +37,12 @@ def array_to_heap(arr):
     return nodes[0]
 
 def draw_heap_tree(tree_root):
+    """
+    Малює дерево-купу за допомогою matplotlib і networkx.
+    
+    :param tree_root: корінь дерева-купи
+    :return: зображення у форматі BytesIO
+    """
     G, pos = build_graph(tree_root)
     colors = [node[1]['color'] for node in G.nodes(data=True)]
     labels = {node[0]: node[1]['label'] for node in G.nodes(data=True)}
@@ -41,6 +58,12 @@ def draw_heap_tree(tree_root):
     return img
 
 def build_graph(tree_root):
+    """
+    Створює граф з дерева-купи.
+    
+    :param tree_root: корінь дерева-купи
+    :return: об'єкт графа і позиції вузлів
+    """
     G = nx.DiGraph()
     pos = {}
 
@@ -57,8 +80,6 @@ def build_graph(tree_root):
     
     add_edges(tree_root)
     return G, pos
-
-
 
 def is_valid_heap(heap_root):
     """
@@ -77,4 +98,3 @@ def is_valid_heap(heap_root):
         return is_valid(node.left) and is_valid(node.right)
     
     return is_valid(heap_root)
-

@@ -8,10 +8,21 @@ import io
 
 
 class Graph:
+    """
+    Клас для представлення графа.
+    """
+
     def __init__(self):
         self.edges = {}
 
     def add_edge(self, from_node, to_node, weight):
+        """
+        Додає ребро до графа.
+
+        :param from_node: початкова вершина
+        :param to_node: кінцева вершина
+        :param weight: вага ребра
+        """
         if from_node not in self.edges:
             self.edges[from_node] = []
         self.edges[from_node].append((to_node, weight))
@@ -20,6 +31,12 @@ class Graph:
         self.edges[to_node].append((from_node, weight))
 
     def draw_graph_with_paths(self, shortest_paths, start_node):
+        """
+        Малює граф з коротшими шляхами.
+
+        :param shortest_paths: коротші шляхи від стартової вершини
+        :param start_node: стартова вершина
+        """
         G = nx.Graph()
         for from_node, edges in self.edges.items():
             for to_node, weight in edges:
@@ -57,6 +74,13 @@ class Graph:
 
 
 def generate_connected_random_graph(num_nodes, num_edges):
+    """
+    Генерує зв'язаний випадковий граф.
+
+    :param num_nodes: кількість вершин
+    :param num_edges: кількість ребер
+    :return: об'єкт графа
+    """
     if num_nodes < 2:
         raise ValueError("Number of nodes must be at least 2.")
     if num_edges < num_nodes - 1:
@@ -82,6 +106,13 @@ def generate_connected_random_graph(num_nodes, num_edges):
 
 
 def dijkstra(graph, start):
+    """
+    Алгоритм Дейкстри для знаходження найкоротших шляхів у графі.
+
+    :param graph: об'єкт графа
+    :param start: стартова вершина
+    :return: словник з найкоротшими шляхами
+    """
     if start not in graph.edges:
         raise ValueError("Start node not in graph.")
     shortest_paths = {start: (None, 0)}
@@ -114,6 +145,13 @@ def dijkstra(graph, start):
 
 
 def visualize_graph(graph, shortest_paths, start_node):
+    """
+    Візуалізація графа з найкоротшими шляхами.
+
+    :param graph: об'єкт графа
+    :param shortest_paths: найкоротші шляхи від стартової вершини
+    :param start_node: стартова вершина
+    """
     G = nx.Graph()
     for from_node, edges in graph.edges.items():
         for to_node, weight in edges:
